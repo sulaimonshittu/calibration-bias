@@ -1,0 +1,13 @@
+.venv/
+.idea/
+__pycache__/
+.ipynb_checkpoints/
+data/
+outputs/
+*.zip
+*.npz
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+.env

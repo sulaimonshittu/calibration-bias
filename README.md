@@ -1,0 +1,1 @@
+This repository contains code only. The DDI dataset is not included and must be obtained from Stanford under its Research Use Agreement (see https://ddi-dataset.github.io/). HAM10000 is available from the ISIC archive and Kaggle. Neither dataset may be redistributed.
