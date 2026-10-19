@@ -2,3 +2,6 @@ pandas
 scikit-learn
 pytest
 pillow
+torch
+torchvision
+matplotlib

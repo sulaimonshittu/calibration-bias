@@ -81,3 +81,9 @@ def summarise(splits) -> pd.DataFrame:
             "malignant_pct": round(100 * malignant / len(part), 1),
         })
     return pd.DataFrame(rows)
+
+def attach_paths(df, index):
+    """Add a 'path' column (string) by looking up each image_id in the file index."""
+    out = df.copy()
+    out["path"] = out["image_id"].map(lambda i: str(index[i]))
+    return out
