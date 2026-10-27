@@ -63,7 +63,7 @@ def summarise_predictions(logits, labels):
 
 
 def fit(model, train_loader, valid_loader, device, out_dir, epochs=15, patience=5,
-        peak_lr=3e-4, weight_decay=1e-4, warmup_frac=0.1):
+        peak_lr=3e-4, weight_decay=1e-4, warmup_frac=0.1, verbose=True):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     model.to(device)
@@ -97,8 +97,8 @@ def fit(model, train_loader, valid_loader, device, out_dir, epochs=15, patience=
                "val_loss": val["loss"], "val_acc": val["acc"], "val_auroc": val["auroc"],
                "seconds": round(time.time() - t0, 1)}
         history.append(row)
-        print(" | ".join(f"{k} {v:.4f}" if isinstance(v, float) else f"{k} {v}"
-                         for k, v in row.items()))
+        if verbose:
+            print(" | ".join(f"{k} {v:.4f}" if isinstance(v, float) else f"{k} {v}" for k, v in row.items()))
 
         if val["loss"] < best:
             best, bad = val["loss"], 0
