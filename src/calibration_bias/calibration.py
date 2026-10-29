@@ -28,16 +28,23 @@ def reliability_table(conf, correct, n_bins=10):
     return pd.DataFrame(rows)
 
 
+def _binned_sums(conf, correct, n_bins):
+    conf, correct = np.asarray(conf, float), np.asarray(correct, float)
+    idx = _bin_index(conf, n_bins)
+    return (np.bincount(idx, minlength=n_bins),
+            np.bincount(idx, weights=conf, minlength=n_bins),
+            np.bincount(idx, weights=correct, minlength=n_bins))
+
+
 def ece(conf, correct, n_bins=10):
-    t = reliability_table(conf, correct, n_bins)
-    t = t[t["n"] > 0]
-    return float(((t["n"] / t["n"].sum()) * (t["accuracy"] - t["mean_conf"]).abs()).sum())
+    n, sum_conf, sum_acc = _binned_sums(conf, correct, n_bins)
+    return float(np.abs(sum_acc - sum_conf).sum() / n.sum())
 
 
 def mce(conf, correct, n_bins=10):
-    t = reliability_table(conf, correct, n_bins)
-    t = t[t["n"] > 0]
-    return float((t["accuracy"] - t["mean_conf"]).abs().max())
+    n, sum_conf, sum_acc = _binned_sums(conf, correct, n_bins)
+    filled = n > 0
+    return float((np.abs(sum_acc[filled] - sum_conf[filled]) / n[filled]).max())
 
 
 def brier(labels, p_positive):
